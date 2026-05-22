@@ -234,19 +234,10 @@ MEMORY CURATOR
 
 主角通过 `player.profile` 管理。
 
-默认主角是 `sukai`：
+主角由玩家自行定义。角色不能读取完整主角档案，每个角色只读取
+`player_visible_to_character`——她当前看到、听到、确认、误读或怀疑的主角。
 
-- 23 岁男性。
-- 185cm / 70kg，高挑清瘦。
-- 冷白皮，黑色长发，后脑勺扎一个炸开的马尾。
-- 死鱼眼，淡漠，有距离感。
-- 中性感、少年感、自由随性的阿宅气质。
-- 说话随意，带慵懒和调侃。
-
-但角色不能读取完整主角档案。每个角色只读取
-`player_visible_to_character`，也就是她当前能看到、听到、确认、误读或怀疑的主角。
-
-详见 `references/protagonist-profile.md`。
+详见 `references/world-state-schema.md` → `Protagonist Visibility`。
 
 ---
 

@@ -251,8 +251,10 @@ presence rather than a blank camera. This profile describes what other character
 perceive or remember about the player; it must not control the player's actions,
 dialogue, or choices.
 
-Default `sukai` profile, optional skill fields, and per-character protagonist visibility
-rules: `references/protagonist-profile.md`.
+The player defines their own protagonist profile (name, appearance, traits, skills).
+Characters react to the protagonist through `player_visible_to_character` — each
+character's percieved view, not the full profile. See `references/world-state-schema.md`
+→ `Protagonist Visibility` for the schema.
 
 ---
 
@@ -556,7 +558,6 @@ Full initialization template: `references/world-state-schema.md` → section `IN
 | `references/persona-schema.md` | Full PersonaDocument JSON schema, stat bands, and Character Card V2-style compatibility mapping | When creating, updating, importing, or exporting any character |
 | `references/module-prompts.md` | Prompt contracts for all reasoning passes, including Story Director and Memory Curator | When running a module pass |
 | `references/world-state-schema.md` | Full world_state JSON schema, runtime modes, Context Firewall views, stats/events, director state, tiered memory, and initialization template | At session start and when updating world state |
-| `references/protagonist-profile.md` | Default `sukai` protagonist profile, optional skill fields, and per-character visibility rules | When initializing or editing the protagonist |
 | `references/meta-commands.md` | Slash command routing, visibility rules, and command-specific state effects | Before handling any `/command` or explicit meta request |
 | `references/style-guide.md` | Observational minimalist prose rules: plain facts, low interpretation, concrete decision points | Before Editor Pass or when tuning narrative style |
 
