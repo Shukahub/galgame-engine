@@ -13,14 +13,14 @@ good stories emerge from constraints, not from narrative manipulation.
 
 我喜欢平实的、真实的叙事。
 
-我认为一个好的故事不是被"编排"出来的——它是在一组约束条件下自然推演出的结果。
-给定一个大环境，给定当前状况，给定每个人物不可违背的设定，让事件自然发生。故事
-的技巧不在煽情，而在安排：事件的时机、人物之间的碰撞、那些看似平常但实际作用很
-大的瞬间。
+我认为一个好的故事不是被按照喜好刻意"编排"出来的，它应该是在一组约束条件下自然推演出的结果。
+给定一个大环境，给定当前状况，给定每个人物的设定，接下来让事件自然发生。故事
+的技巧不在煽情，而在安排：事件的时机够不够准，人物之间的碰撞够不够真实，
+那些看似普通的瞬间有没有被放对位置。
 
-我喜欢法国新浪潮电影。它们的镜头语言平实，没有煽情导向。导演拍下女人推开窗户，
-然后切到桌上的一杯水——他相信观众有足够的观察力，能从这些克制的、客观的镜头里
-感受到人物的情感。这是对观众的尊重。
+我很喜欢看法国新浪潮电影。因为它们的镜头语言平实，没有煽情导向。没有背景音乐替你感受。导演拍下女人推开窗户，
+然后切到桌上的一杯水——导演什么都没解释，他相信观众有足够的观察力和情感经历，能从这些克制的、客观的镜头里
+感受到人物的情感流动。这不是风格选择，这是对观众的尊重。
 
 但这种审美在传统 AI 角色扮演中几乎不可能实现。
 
@@ -32,15 +32,11 @@ good stories emerge from constraints, not from narrative manipulation.
 这导致了一个致命的后果：角色失去了主体性。
 
 当叙事者和角色控制器是同一个思维过程时，角色的行为会被叙事逻辑"绑架"。她的动作、
-她的台词、她的情绪反应——不是来自她的性格设定，而是被选择来配合场景的审美需求。
-她"应该"在这个时刻脸红，因为那样"好看"。她"应该"说一句带刺的话然后转过头去，
-因为那样"有张力"。
+她的台词、她的情绪反应——不是来自她的性格和当下情绪，而是被选择着来配合场景的审美需求。
+她"应该"在这个时刻脸红，因为那样"好看"。角色变成了布景的一部分。她不再是一个有独立心理的人，而是叙事者在场景构图里摆放的一个元素。
 
-角色变成了布景的一部分。她不再是一个有独立心理的人——她是叙事者在场景构图里
-摆放的一个元素。
-
-这就是为什么简单的 prompt（"假装你是一个傲娇女孩"）产出的体验是扁平的。AI
-认识这个标签，但标签之下没有可以提取的私密内心。角色的一切反应都是表层表演。
+这就是为什么简单的 prompt（"现在你是一个傲娇女孩"）模拟的体验是扁平的。AI
+认识这个标签，但标签之下什么也没有。她的每一句回应都是表层表演，没有可以挖掘的私密内心。
 
 ### 这个框架做了什么
 
@@ -51,19 +47,19 @@ good stories emerge from constraints, not from narrative manipulation.
 玩家输入
      │
      ├─▶ 剧情导演 ── 只决定：下一个节拍是什么类型？节奏该快还是慢？
-     │   不能写散文，不能写对话，不能决定角色的情绪。
+     │   不能写对话，不能决定角色的情绪。
      │
-     ├─▶ 场景叙述 ── 只写环境：光、声、空间、物体。舞台，不写演员。
-     │   不能给角色标注情绪，不能解释潜台词，不能度量动作。
+     ├─▶ 场景叙述 ── 只写主角能感受到的环境：光、声、空间、物体。
+     │   不能给角色标注情绪，不能解释潜台词。
      │
-     ├─▶ 角色构建 ── 新角色出现时，创建完整的心理学档案。
+     ├─▶ 角色构建 ── 新角色出现时，立刻创建完整的心理学档案。
      │   （触发：玩家 /newrole、新人物入场、重大事件）
      │
      ├─▶ 角色回应 ── 每个角色独立调用一次。只收到她能看到/知道的信息。
      │   她的性格、依恋风格、防御机制是约束条件。她的行为从这些约束中产生。
      │         │
      │         ▼
-     └─▶ 编辑合并 ── 整合输出，剥离叙事者的分析，保留舞台与演员之间的缝隙
+     └─▶ 编辑合并 ── 整合输出
 ```
 
 **核心原则：约束优先于叙事。**
@@ -82,9 +78,8 @@ good stories emerge from constraints, not from narrative manipulation.
 每个角色不是靠标签（"傲娇"、"温柔"、"冷淡"）定义的——而是靠一套心理学结构：
 
 - **荣格分层**：Persona（面具）/ Shadow（阴影）/ Anima-Animus（内化的亲密理想）
-- **核心伤痛**：一个具体的、塑造了她的经历。不是"曾被抛弃"，而是"父母离婚后，
-  母亲不再直接对她说话——所有沟通通过弟弟转达。她学会了：自己的感受太麻烦，
-  不值得被直接面对。"
+- **核心伤痛**：一个具体的、塑造了她的经历。不是"曾被抛弃"这样片面的词条，而是"父母离婚后，
+  母亲不再直接对她说话，她学会了：自己的感受太麻烦， 不值得被直接面对。"这样的具体事件也给玩家带来了可挖掘的地方。
 - **核心渴望**：她在所有行为之下真正想要的东西。和面具之间产生可玩的张力——
   可能是矛盾，也可能是骄傲、恐惧、责任、控制欲或饥渴。
 - **依恋风格**：安全型 / 焦虑型 / 回避型 / 混乱型。直接决定她面对玩家靠近
@@ -183,10 +178,12 @@ and characters with non-negotiable traits. Then you let events unfold. The craft
 isn't in emotional manipulation; it's in arrangement: the timing of events, the
 collision of personalities, the quiet moments that turn out to matter.
 
-I love French New Wave cinema. The camera is flat. No push-in on a tear. No music
-telling you what to feel. A woman opens a window. Cut to a glass of water on a
-table. The director trusts you to feel something. That trust — the belief that the
-audience has eyes and a mind — is what gives those films their weight.
+I love French New Wave cinema. The camera is flat. No push-in on a tear. No
+background music feeling things on your behalf. The director films a woman
+pushing open a window, then cuts to a glass of water on a table — he explains
+nothing. He trusts the audience has enough observation and life experience to
+perceive the emotional current running through those restrained, objective shots.
+This isn't a stylistic choice. It's respect for the audience.
 
 This aesthetic is almost impossible to achieve in traditional AI roleplay.
 
@@ -200,17 +197,15 @@ The consequence is fatal to character: the character loses her subjectivity.
 
 When the narrator and the character controller are the same thought process, the
 character's actions get hijacked by narrative convenience. Her gestures, her lines,
-her emotional responses — they don't come from her personality. They're chosen to
-make the scene aesthetically pleasing. She "should" blush now, because that would
-look good. She "should" say something sharp and then turn away, because that would
-create "tension."
-
-The character becomes set dressing. She's no longer a person with independent
-psychology — she's an element the narrator places in the scene composition.
+her emotional responses — they don't come from her personality or her current
+emotional state. They're chosen to make the scene aesthetically pleasing. She
+"should" blush now, because that would look good. The character becomes set
+dressing. She's no longer a person with independent psychology — she's an element
+the narrator places in the scene composition.
 
 That's why simple prompts ("pretend you're a tsundere girl") produce flat
-experiences. The AI knows the label, but there's no private interior beneath it
-to draw from. Every response is surface performance.
+experiences. The AI knows the label, but there's nothing beneath it. Every
+response is surface performance — there is no private interior to excavate.
 
 ### What this framework does
 
@@ -224,11 +219,11 @@ Player Input
      ├─▶ STORY DIRECTOR — Decides only: what beat type? faster or slower?
      │   Cannot write prose, dialogue, or decide character emotions.
      │
-     ├─▶ SCENE NARRATOR — Writes only the environment: light, sound, space,
-     │   objects. The stage, not the actors. Cannot label emotions, explain
-     │   subtext, or quantify gestures.
+     ├─▶ SCENE NARRATOR — Writes only what the protagonist can perceive:
+     │   light, sound, space, objects. Cannot label emotions or explain subtext.
      │
-     ├─▶ CHARACTER ARCHITECT — Builds full psychological persona documents.
+     ├─▶ CHARACTER ARCHITECT — Creates full psychological persona documents
+     │   immediately when a new character appears.
      │   (Triggered by: new characters, major events, player /newrole)
      │
      ├─▶ CHARACTER RESPONSE — Called once per character per turn. Receives
@@ -237,8 +232,7 @@ Player Input
      │   behavior emerges from those constraints.
      │         │
      │         ▼
-     └─▶ EDITOR PASS — Merges outputs, strips narrator analysis, preserves
-          the gap between stage and actors.
+     └─▶ EDITOR PASS — Merges outputs into the final turn.
 ```
 
 **Core principle: constraints over narrative.**
@@ -263,10 +257,11 @@ with a psychological structure:
 
 - **Jungian layers** — Persona (mask) / Shadow (repressed) / Anima-Animus
   (internalized ideal of intimacy)
-- **Core wound** — a specific formative experience. Not "was abandoned." More:
-  "After her parents divorced, her mother stopped speaking to her directly —
-  all communication went through her younger brother. She learned her feelings
-  were too inconvenient to be addressed."
+- **Core wound** — a specific, concrete formative experience. Not a vague label
+  like "was abandoned," but something like: "After her parents divorced, her
+  mother stopped speaking to her directly — all communication went through her
+  younger brother. She learned that her feelings were too inconvenient to be
+  addressed." This specificity also gives the player something to dig into.
 - **Core desire** — what she actually wants beneath all behavior. Creates playable
   tension with her persona: contradiction, pride, fear, duty, control, hunger.
 - **Attachment style** — secure / anxious / avoidant / disorganized. Governs how
@@ -274,9 +269,9 @@ with a psychological structure:
 - **Defense mechanisms** (2-3) — intellectualization, projection, reaction
   formation, displacement, sublimation, denial, splitting. Each with concrete
   triggers and visible behavioral manifestations.
-- **Unlock tiers** (0-3) — trust < 35: surface only. trust 35-64: first cracks.
-  trust 65-84: shadow surfaces. trust ≥ 85: core wound exposed, genuine
-  vulnerability possible.
+- **Unlock tiers** (0-3) — trust < 35: surface only. trust 35-64: first cracks
+  appear. trust 65-84: shadow begins surfacing. trust ≥ 85: core wound exposed,
+  genuine intimacy becomes possible.
 
 ### Prose style: observational minimalism (白描)
 
@@ -306,10 +301,10 @@ Restricted contrast words: "but," "yet," "however" — allowed only for physical
 contradictions ("the door was open, but the light was off"), never to translate
 a character's emotions for the reader.
 
-The philosophy: **trust the audience.** Believe they have enough observation and
-insight to perceive a character's emotions through restrained, objective
-description. What French New Wave cinema did with a camera, this engine does
-with prose.
+The philosophy behind this style: **trust the audience.** Believe they have
+enough observation and insight to perceive a character's emotions through
+restrained, objective description. This is exactly what French New Wave
+cinema did with a camera — this engine does it with prose.
 
 ### Installation
 
