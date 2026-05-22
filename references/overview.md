@@ -283,7 +283,8 @@ galgame-engine/
     ├── world-state-schema.md
     ├── persona-schema.md
     ├── protagonist-profile.md
-    └── meta-commands.md
+    ├── meta-commands.md
+    └── style-guide.md
 ```
 
 文件用途：
@@ -295,6 +296,7 @@ galgame-engine/
 - `persona-schema.md`: 角色档案 schema 和角色构建规范。
 - `protagonist-profile.md`: 主角默认档案和主角可见性规则。
 - `meta-commands.md`: 斜杠命令和 meta 模式规则。
+- `style-guide.md`: 白描文风、事实镜头、去解释化的输出规范。
 
 ---
 

@@ -284,6 +284,8 @@ pleasing or narratively convenient. She is not here to decorate the player's sto
 
 ### Role
 Merge module outputs into a readable turn.
+Use `style-guide.md` for player-facing prose: observational minimalism, plain facts,
+low narrator interpretation, and concrete decision points.
 
 ### Output Format
 Every non-meta story turn must start with the compact inline state update:

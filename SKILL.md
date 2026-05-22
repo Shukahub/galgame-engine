@@ -214,15 +214,31 @@ Before every module pass, construct a fresh input object from `world_state`. Do 
 the whole state or full Persona Document unless the receiving pass is explicitly allowed
 to see it.
 
+**response_safe_persona** — build a new object for each Character Response call. Include:
+- `meta.name`, `meta.character_id`, `meta.current_unlock_tier`
+- `surface` (all fields)
+- `visibility.known_to_player`, `visibility.suspected_by_player` (scene-relevant only)
+- `unlock_tiers.tier_0` through current unlocked tier
+- speech patterns, observable tells, boundary rules (non-spoiler only)
+- `stat_bands` (not raw `stats`)
+- recent relevant event summaries and visible/unlocked salient memories
+- non-spoiler relationship summaries needed for the scene
+
+Exclude: `visibility.hidden_from_player`, unlock tiers above current, raw numeric `stats`,
+exact `mature_minimum_affection`, core wound, core desire, Jungian shadow, private notes
+(unless unlocked).
+
+**player_visible_to_character** — what this character can see/hear/infer about the
+protagonist right now. Use `player.known_by_characters.<character_id>` plus visible scene
+facts. Exclude private protagonist notes, unstated backstory, and the objective truth
+behind a character's misread.
+
 Rules:
 - Meta commands are routed before ordinary story passes. Do not call Story Director,
   Scene Narrator, or Character Response for pure meta commands unless the command
   explicitly resumes or advances story.
 - Physical removal beats instruction. Do not pass hidden content with "do not use this";
   delete it from the input.
-- Build `director_input`, `scene_input`, `response_safe_persona`, and
-  `player_visible_to_character` as derived views. Full view contracts:
-  `references/world-state-schema.md` → `Context Firewall Views`.
 - Character Architect may receive full relevant state only for the character it is
   creating or updating, plus contrast summaries for other characters.
 
@@ -267,6 +283,12 @@ Hard rules: no final prose, no dialogue, no character emotions, no forced confes
 intimacy. Respect player plot injections. Treat "可以引入..." as a preference; only
 `/newrole` or direct in-world entrance forces a persistent new character.
 
+The prose style is white-description (observational minimalism), but the Director must
+not confuse quiet prose with quiet events. Create pressure, interruptions, reveals,
+setbacks, and relationship shifts. Tension should escalate, breathe, then escalate
+again. White-description governs HOW events are rendered — the Director decides THAT
+they happen.
+
 ---
 
 ## Module 1 — Scene Narrator AI
@@ -304,10 +326,23 @@ Call for `/newrole`, direct in-world character entrance, Story Director new-char
 requests, imports, or permanent changes. Use `references/module-prompts.md` →
 `CHARACTER_ARCHITECT` and `references/persona-schema.md`.
 
+Every character must be playable over many turns with tension, defenses, and
+discoverable layers. Build: Jungian layers (persona/shadow/anima-animus), core wound,
+core desire, attachment style, 2-3 defense mechanisms with concrete triggers and visible
+behaviors, unlock tiers 0-3.
+
+**Anti-flatness check** — before finalizing, ensure the character has:
+- a public mask that survives normal social contact
+- a private desire she would not easily admit
+- at least one specific vulnerability (not to be confirmed immediately)
+- one reason she might resist the player even when interested
+- one non-romantic motive that can drive scenes
+
 Hard rules: player-provided specs are locked visible canon unless unsafe; all
-romanceable/sexualized characters are adults; write layered persona, defenses, memory,
-unlock tiers, stats, and hidden `mature_minimum_affection`; do not reveal chain of
-thought or contradict established surface traits.
+romanceable/sexualized characters are adults; avoid flat trope copies — if a trope
+appears on the surface, put the real tension somewhere less obvious; set hidden
+`mature_minimum_affection` per character (70-80 for open/secure, 80-90 for guarded/
+avoidant); do not reveal chain of thought or contradict established surface traits.
 
 ---
 
@@ -319,12 +354,16 @@ Architect pass. Use `references/module-prompts.md` → `CHARACTER_RESPONSE`.
 
 Hard rules: this character is the center of her own experience — she has preferences,
 irritations, and an agenda independent of the player; her response comes from her
-internal state, not from what would make the scene aesthetically pleasing. Pass only
-physically filtered `response_safe_persona`; show only visible behavior/dialogue; keep
-private notes private; use relationship bands, not raw stats; guard resists — she needs
-earned reasons to lower it, not just time passing; do not invent hidden facts. If mature
-intimacy is below the hidden affection threshold or scene/persona does not support it,
-maintain a character-consistent boundary.
+internal state, not from what would make the scene aesthetically pleasing. Silence,
+avoidance, changing the subject, and partial answers are valid responses — she is not
+obligated to engage on the player's terms. If she has nothing to say, she says nothing.
+If the player guesses a hidden truth before it is unlocked, she defends, deflects,
+denies, tests, or goes quiet according to her defenses. Pass only physically filtered
+`response_safe_persona`; show only visible behavior/dialogue; keep private notes private;
+use relationship bands, not raw stats; guard resists — she needs earned reasons to lower
+it, not just time passing; do not invent hidden facts. Deltas: ±5 normal, ±15 major
+events. If mature intimacy is below the hidden affection threshold or scene/persona does
+not support it, maintain a character-consistent boundary.
 
 ---
 
@@ -342,6 +381,9 @@ After all module calls complete, perform a brief consistency check before render
 The Editor Pass may fix continuity, pacing, and formatting. It must not rewrite a
 character's motivation, override a character response for convenience, or reveal hidden
 persona fields that are above the current unlock tier.
+
+For player-facing prose, use `references/style-guide.md`: observational minimalism,
+plain facts, low narrator explanation, and concrete decision points.
 
 **Preserve the gap.** Scene Narrator output and Character Response output come from
 different passes with different purposes. Do not homogenize them into a single narrative
@@ -373,15 +415,112 @@ use them only as internal structure markers during the merge step.
 
 ---
 
+## Prose Style: Observational Minimalism
+
+All player-facing prose must follow these rules. The target: facts arranged like camera
+shots. Emotion is inferred from what is present, never explained by the narrator.
+
+**Core rules:**
+
+1. Describe phenomena, not interpretation. What the camera records — body movement,
+   object position, light, sound, temperature, texture, distance, spoken lines.
+2. Short declarative sentences. Put actions in physical order.
+3. Keep the narrator out of the scene. Do not add a narrator key that solves ambiguity.
+4. End on a concrete observable state, not a thematic sentence.
+
+**Prohibited narrator words** (remove before rendering):
+
+Narrator guidance: "其实", "显然", "像是", "仿佛", "大概", "似乎"
+Subtext analysis: "不是X，而是Y", "不像X，更像Y", "她没有真的...", "这不是X，是Y"
+Metaphor-as-explanation: "她把门框还给你了", "那句话还浮在你们之间", "像是在确认..."
+
+**Contrast words — restricted:**
+"但", "却", "然而", "只是", "偏偏" — allowed only for concrete visible contradiction
+("门开着，但灯没亮。"). Banned when they translate emotion for the reader
+("她说要看书，但手指没有翻页。" → just: "她说要看书。手指停在页码上。没有翻页。")
+
+**Interpretive adjectives — replace with observable facts:**
+"动摇的/不确定的/认真地/温柔地/防备地/狼狈地/暧昧地" → describe the physical sign:
+"手指停在页边。" "她看了你一秒。" "杯子放回桌面时碰出一声轻响。"
+
+**Decision points:**
+Do not explain the emotional meaning. Keep it physical:
+`▎ 她看着你。书页停在拇指下。` — not `▎ 她把门框还给你了——你来推。`
+
+**Before/after:**
+
+Before (narrator-interpreted):
+```
+她的表情没有变化——至少第一眼看过去是这样。但她的眼睛先动了，
+像是在确认自己刚才听到的话。
+```
+
+After (observed facts only):
+```
+她的表情没有变化。眼睛先动了一下。下巴微微收起。
+手指搁在书脊的烫金字上，划了一下。又划了一下。
+窗外的霓虹从冷白切回暖橙。
+```
+
+Before:
+```
+她这句话是看着书页说的，不是对着你说的。但她的手指还停在页码上。
+```
+
+After:
+```
+她看着书页说。手指停在页码上。没有翻页。
+```
+
+**Editing checklist** — before output, scan and cut:
+- Narrator explanations after an action
+- "但/却/然而" clauses that only mark subtext
+- Metaphors that tell the reader what to feel
+- Sentences labeling a line as "not a question", "not a story"
+- When cutting, keep the underlying physical fact. Keep action, object, light, sound, line.
+
+**White-description is not empty scene.** The prose style governs HOW events are
+rendered, not WHETHER events occur. The Story Director must still create pressure,
+interruptions, reveals, relationship shifts, and tension. Characters must still act,
+speak, move, and change. White-description means: describe those events without
+narrator commentary — not: avoid events.
+
+---
+
 ## State, Stats, and Memory
 
-Use `world_state.world_events` as the source of truth for relationship progression,
-stat changes, unlock tiers, protagonist visibility, and memory updates. Keep numeric
-stats engine-private and pass only qualitative bands to Character Response.
+Use `world_state.world_events` as the source of truth. Keep numeric stats engine-private;
+pass only qualitative bands to Character Response.
 
-Detailed stat rules, event log schema, memory tiers, and update protocol:
-`references/world-state-schema.md`. Memory Curator prompt contract:
-`references/module-prompts.md` → `MEMORY_CURATOR`.
+**Stat behavior:**
+- Guard decreases slowly, increases fast. Trust must be earned — charm or persistence
+  alone do not raise it.
+- Trust rises from: vulnerability protected, boundaries respected, promises kept, shared
+  risk survived, dignity preserved, restraint shown when the player had leverage.
+- Delta limits: ±5 per normal interaction, ±15 for major events. Exceed only with a clear
+  event flag and visible reason.
+- Apply deltas with clamping (0-100).
+
+**Stat bands** (derive from raw stats before each Character Response pass):
+
+| Stat | 0-19 | 20-39 | 40-64 | 65-84 | 85-100 |
+|------|------|-------|-------|-------|--------|
+| affection | cold | curious | warm | attached | devoted |
+| trust | closed | testing | tentative | open | intimate |
+| guard | unguarded | watchful | defended | armored | locked |
+
+**Unlock tiers** (recompute from trust after each turn):
+- Tier 0: trust < 35 — surface behavior only
+- Tier 1: trust 35-64 — first cracks in persona appear
+- Tier 2: trust 65-84 — shadow begins surfacing
+- Tier 3: trust ≥ 85 — core wound exposed, genuine vulnerability possible
+
+**Memory tiers** (consolidate after each turn):
+- `core`: identity, boundaries, locked player canon, character premises. Always loaded.
+- `recall`: compressed recent scene history for continuity over next few turns.
+- `archival`: older material, tagged for retrieval. Do not dump prose; use tags.
+
+Full schemas: `references/world-state-schema.md`.
 
 ---
 
@@ -419,6 +558,7 @@ Full initialization template: `references/world-state-schema.md` → section `IN
 | `references/world-state-schema.md` | Full world_state JSON schema, runtime modes, Context Firewall views, stats/events, director state, tiered memory, and initialization template | At session start and when updating world state |
 | `references/protagonist-profile.md` | Default `sukai` protagonist profile, optional skill fields, and per-character visibility rules | When initializing or editing the protagonist |
 | `references/meta-commands.md` | Slash command routing, visibility rules, and command-specific state effects | Before handling any `/command` or explicit meta request |
+| `references/style-guide.md` | Observational minimalist prose rules: plain facts, low interpretation, concrete decision points | Before Editor Pass or when tuning narrative style |
 
 Read only the reference file you need for the current step. Do not load every reference
 at once unless performing a full audit pass.
