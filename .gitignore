@@ -13,3 +13,6 @@
 .idea/
 .vscode/
 *.iml
+
+# Personal data — keep local, never push
+references/protagonist-profile.md
